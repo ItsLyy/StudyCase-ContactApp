@@ -1,6 +1,7 @@
 import React from "react";
 import ContactList from "./ContactList";
 import { getData } from "../utils/data";
+import ContactInput from "./ContactInput";
 
 class ContactApp extends React.Component {
   constructor(props) {
@@ -11,12 +12,15 @@ class ContactApp extends React.Component {
     }
 
     this.onDeleteEventHandler = this.onDeleteEventHandler.bind(this);
+    this.addData = this.addData.bind(this);
   }
 
   render() {
     return (
       <div className="contact-app">
-        <h1>Contact List</h1>
+        <h2>Form Input</h2>
+        <ContactInput addData={this.addData}/>
+        <h2>Contact List</h2>
         <ContactList contacts={this.state.contacts} deleteEvent={this.onDeleteEventHandler}/>
       </div>
     )
@@ -25,6 +29,21 @@ class ContactApp extends React.Component {
   onDeleteEventHandler(id) {
     const contacts = this.state.contacts.filter(contact => contact.id !== id)
     this.setState({ contacts })
+  }
+
+  addData({ name, tag }) {
+    this.setState((previousState) => {
+      return {
+        contacts: [
+        ...previousState.contacts,
+        {
+          id: +new Date(),
+          name,
+          tag,
+          image: '/images/default.jpg', 
+        }
+      ]}
+    })
   }
 }
 
